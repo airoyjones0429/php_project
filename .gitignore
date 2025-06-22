@@ -1,0 +1,30 @@
+# 完整檔案名稱：
+.env            # 環境設定檔
+.config         # 配置檔案
+.DS_Store       # macOS Finder 產生的檔案
+app.log         # 名叫 app 的 log 檔案
+# 直接定義要忽略的副檔名：
+*.log           # 忽略所有以 .log 結尾的檔案
+*.tmp           # 忽略所有以 .tmp 結尾的檔案
+# 以驚嘆號(！)來例外某些檔案：
+*.log           # 忽略所有以 .log 結尾的檔案
+!important.log  # 但不忽略 important.log 
+# 忽略任何叫某個名字的檔案(不管副檔名)
+hello.*         # 忽略任何叫 hello 的檔案，包含 hello.txt、hello.java ...
+# 忽略所有以某個字樣開頭的資料
+image*          # 忽略所有以 image 開頭命名的資料(包含檔案與目錄)
+# 只忽略「根目錄」的目錄或檔案：
+/Test           # 只忽略根目錄 Test ，不忽略子目錄的 Test，例如 Vue/Test 就不會被忽略
+# 忽略目錄底下的 「所有內容」：
+.vscode/        # Visual Studio Code 設定檔
+.idea/          # IntelliJ IDEA 設定檔
+node_modules/   # Node.js 的依賴模組
+build/          # 編譯或建置的結果目錄
+dist/           # 發布版程式碼的目錄
+
+# 這是一個有效註解
+.vscode/  # 寫在這裡是無效註解，所以上述範例註解會直接使設定無效！！
+
+pdo*
+script1.js
+jquery*

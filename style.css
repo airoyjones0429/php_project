@@ -1,0 +1,176 @@
+/* :root {
+    --key_space : "100px" ;
+} */
+
+@property --key_space{
+    syntax: "<length>";
+    inherits: false;   /*  false 不會繼承父容器的屬性值 , true 會繼承父容器的屬性值 */ 
+    initial-value: 10px;
+  }
+
+body {
+    background-color: black;
+    color: white;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    overflow: hidden; /* 隱藏 垂直與水平 卷軸 */
+}
+
+h1 {
+    font-size: 2.5em;
+}
+
+h2 {
+    font-size: 2em;
+}
+
+.testborder{
+    /* 設計測試使用的 CSS 樣式 */
+    border: 2px solid white;
+    resize: both;
+    overflow: auto;
+
+    /* 指定的 width height 是實際的大小，包含邊框以內 
+       如果設定為 border-box  取回的 clientWidth、clientHeight 會比較小
+       因為扣掉了邊框與 padding 空間
+    */ 
+    box-sizing: border-box; 
+}
+
+.top{
+    display: inline-block;
+    /* align-items: center; 沒用
+    align-content: center;
+    align-self: center; */
+    /* justify-items: center; 沒用
+    justify-content:center ;
+    justify-self: center; */
+}
+.screen{
+    /* 這樣可以讓內部的 inline 或 inline-block 元素置中 */
+    text-align: center;
+}
+.screen>div{
+    display: inline-block;
+    width: 734px;
+    /* height: 290px; */
+    height: 400px;
+    border: 2px double red;
+}
+
+.keyboard {
+    display: flex; /* 會將元素盡量排列在在同一排 */
+    flex-wrap: nowrap; /* 設定後，一定會把元素排在一列中 */
+    flex-wrap: wrap; /* 設定後，當無法維持正常寬度時，允許換到下一行 */
+    justify-content: center; /* 至中 */
+    justify-content: start; /* 靠左 */
+    /* overflow-x: auto; */
+    margin: 20px 0;
+}
+
+.key {
+    width:  50px;
+    height: 50px;
+    margin: 5px;
+    display: flex; /* 注意這裡有 flex */
+    align-items: center; /* 垂直置中 */
+    justify-content: center;  /* 水平置中 */
+    border: 1px solid white;
+    transition: background-color 1s, color 1s;
+    font-size: 1.5em;
+}
+
+.blank_key{
+    width: 100%;
+    height: 50px;
+    margin: 5px;
+
+    /* display: flex; */
+    /* align-items: center; display:flex 才有垂直置中效果  但水平會變成在最左 */
+    /* justify-content: center; */
+    /* 上面與下面 都有置中效果 但上面有 display 設定會影響 */
+    text-align: center;  /* 文字水平置中 */
+    align-content: center; /* 垂直置中 */
+    
+    border: 1px solid white;
+    transition: background-color 1s, color 1s;
+    font-size: 1.5em;    
+}
+
+.displayInline {
+    display:inline ;
+}
+
+
+
+/* 會選擇第 10 個元素 */
+/* .keyboard .key:nth-child(10) {
+    color: red; 
+} */
+
+/* 會選擇第 12 個元素 */
+.keyboard .key:nth-child(12) {
+    color: yellow;
+}
+
+/* 從第 1 個元素開始套用到最後 */
+.keyboard .key:nth-child(n) {
+    margin-left: var(--key_space); 
+}
+
+/* 從第 11 個元素開始套用到最後 */
+.keyboard .key:nth-child(n+11) {
+    margin-left: var(--key_space); /* 偏移 1/3 的 DIV 寬度 */
+}
+
+/* 從第 22 個元素開始套用到最後 */
+.keyboard .key:nth-child(n+22) {
+    margin-left: var(--key_space); /* 偏移 1 的 DIV 寬度 */
+}
+
+/* 從第 35 個元素開始套用到最後 */
+.keyboard .key:nth-child(n+35) {
+    margin-left: 0 ;
+}
+
+.center {
+    
+}
+
+.otherkey{
+    visibility: hidden;
+}
+
+button {
+    font-size: 1.5em;
+    margin-top: 20px;
+}
+
+.testword {
+    animation-name: promptWord;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+@keyframes promptWord {
+    0%   {background-color: red;}
+    25%  {background-color: yellow;}
+    50%  {background-color: blue;}
+    100% {background-color: green;}
+}
+
+
+/* 
+
+在 CSS 中，當一個固定大小的 DIV 容器內部的
+
+子容器
+
+使用 inline-block 排列時，
+
+當瀏覽器視窗變小時，這些子容器不會自動換行，這是正確的。
+
+這是因為 inline-block 元素會保持在同一行，直到沒有足夠的空間容納它們為止。
+
+因為是畫面的大小改變，但內部的父容器大小並沒有改變
+
+*/

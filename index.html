@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打字遊戲</title>
+    
+    <!-- CSS 樣式每次跟改的時候，修改這裡的版本，可以確定客戶端瀏覽器是裝正確的 CSS 版本 -->
+    <link rel="stylesheet" href="style.css?v=0.99">
+</head>
+<body>
+    <div style="display: flex;justify-content: center;">
+        <div >
+            <!-- 中間穿插一個 display block ，讓父容器的 display flex 作用在中間的 DIV，讓子容器不被上一層的 flex 所影響 -->
+            <div id="toppanel" style="width:735px;position: relative;" class="testborder">
+                <div class="top testborder" style="display: block;">
+                    <h1>打字遊戲</h1>
+                </div>
+                <!-- <div class="top testborder" style="width: 200px;"> -->
+                </div>
+                <div class="top testborder">
+                    <h1 id="score" class="displayInline"  >分數: 0</h1>
+                    <h1 id="timeup" class="displayInline" >時間: 0</h1>
+                </div>
+                <!--  時間進度條  -->
+                <div id="progressBarM" style="display: block;position: relative; background-color: white;height: 50px;">
+                    <div id="progressBarS" style="display: block; background-color: blue;height: 100%;width: 50%;"></div>
+                    <div id="progressText" style="position: absolute;left: 50%;top: 30%;"></div>
+                </div>                
+            </div>
+        </div>
+    </div>
+
+
+    <div style="position: relative;">
+        <div >
+            <h1 id="question" style="display:inline;"></h1> <!-- 測驗的單字 -->
+            <h1 id="chinese" style="display:inline;"></h1> <!-- 測驗字母的中文 -->
+        </div>
+
+        <h1 id="questionProgress"></h1> <!-- 目前要輸入的字母 -->
+
+        <div id="userInput" style="position: absolute; top: 0px;left: 0px;"></div>  <!-- 累計按下過的按鍵 -->
+        <div id="userInput1" style="position: absolute;top: 0px;right: 0px;"></div> <!-- 目前輸入單字  -->
+    </div>
+
+    <div class="screen" > <!--  鍵盤排版位置 -->
+        <div >
+            <div class="keyboard">
+                <div class="key otherkey" style="width: 10px;"></div> <!-- 1-th -->
+                <div class="key" id="Q">Q</div> <!-- 2-th -->
+                <div class="key" id="W">W</div>
+                <div class="key" id="E">E</div>
+                <div class="key" id="R">R</div>
+                <div class="key" id="T">T</div>
+                <div class="key" id="Y">Y</div>
+                <div class="key" id="U">U</div>
+                <div class="key" id="I">I</div>
+                <div class="key" id="O">O</div>
+                <div class="key" id="P">P</div> <!-- 11-th -->
+                <div style="width: 100%;height: 30px;background-color: blueviolet;"></div> <!-- 12-th 用來當作 flex 的換行-->
+                <div class="key otherkey" style="width: 34px;"></div> <!-- 13-th -->
+                <div class="key" id="A">A</div> <!-- 14-th -->
+                <div class="key" id="S">S</div>
+                <div class="key" id="D">D</div>
+                <div class="key" id="F">F</div>
+                <div class="key" id="G">G</div>
+                <div class="key" id="H">H</div>
+                <div class="key" id="J">J</div>
+                <div class="key" id="K">K</div>
+                <div class="key" id="L">L</div> <!-- 22-th -->
+                <div style="width: 100%;height: 30px;background-color: blueviolet;"></div> <!-- 23-th 用來當作 flex 的換行-->
+                <div class="key otherkey" style="width: 60px;"></div> <!-- 24-th -->
+                <div class="key" id="Z">Z</div> <!-- 25-th -->
+                <div class="key" id="X">X</div>
+                <div class="key" id="C">C</div>
+                <div class="key" id="V">V</div>
+                <div class="key" id="B">B</div>
+                <div class="key" id="N">N</div>
+                <div class="key" id="M">M</div>
+                <!-- <div class="key otherkey" id="dot">,</div> 32-th -->
+                <div class="key" id="COMMA">,</div> <!-- 32-th -->
+                <div class="key" id="DOT">.</div> <!-- 33-th -->
+                <div style="width: 100%;height: 30px;background-color: blueviolet;"></div> <!-- 34-th 用來當作 flex 的換行-->
+                <div class="blank_key" id="BLANK_KEY">空白鍵</div> <!-- 35-th -->
+            </div>
+        </div>
+    </div>
+
+    <button id="startBtn">開始遊戲</button>
+    <button id="foucsBtn">無作用按鈕</button>
+    <!-- <div id="question"></div>
+    <div id="userInput"></div> -->
+    <script src="script.js?v=0.199"></script>
+</body>
+</html>
+
+

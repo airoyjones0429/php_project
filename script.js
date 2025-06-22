@@ -3,6 +3,7 @@ let currentLetter = ''; //目前要輸入的字母
 let difficulty = '小學'; // 預設難度
 let timerNumber ; ///計時器編號
 let words =[] ; ///放所有的英文單字
+let words_number = 0 ; //放 words[] 原本的陣列元素數量
 let oneWord = '' ;  //單字字串
 let chineseMean = '' ;  //單字中文意思
 let charArray = [] ; ///字母陣列
@@ -55,6 +56,7 @@ function startGame() {
         .then(data => {
             // console.log(data) ; //getWords.php 傳來的 JSON 資料  $words[] = ['word' => $row['word'],'chinese' => $row['chinese'] ];
             words = data ; //設定英文字母
+            words_number = words.length ; //紀錄原始的單字數量
             // console.log(words.length) ; //關聯式陣列，的資料筆數
             // console.log(words[0]) ; //關聯式陣列，選擇第一筆資料
             // console.log(words[0]['word'] ) ; //關聯式陣列，欄位名稱
@@ -87,7 +89,7 @@ function startTypingGame() {
 function nextLetter() {
     //提醒玩家，要按下哪一個按鈕，並將該按鈕的文字，做顏色改變處理
     let  promptWordColorTimer ; // setInterval()
-    let tempWord ;
+    let tempWord ;    
 
     //如果沒有英文單字與字母可輸入，代表遊戲結束
     if ( (words.length === 0) && (charArray.length === 0) ) {
@@ -96,6 +98,9 @@ function nextLetter() {
     }
 
     if (charArray.length===0){
+        //顯示剩餘單字數量與輸入單字數量
+        showWaitKeyInQty('wait_qty','keyin_qty');
+
         //當比對的字母長度為 0 時，要取得下一個字母的陣列
         //將第一個字串元素移出陣列，並設定給 currentLetter
         tempWord = words.shift()  ;
@@ -335,3 +340,11 @@ function highlightKey(key,delaytime,bgColor,fColor) {
     }
 }
 
+//顯示完成單字數、待輸入字數
+function showWaitKeyInQty( waitqty_id  , keyinqty_id ){
+    if (charArray.length == 0){
+        document.querySelector(`#${keyinqty_id}`).innerHTML = `完成單字數: ${words_number -  words.length }` ;
+    }    
+    document.querySelector(`#${waitqty_id}`).innerHTML = `待輸入字數: ${words.length}` ;
+
+}

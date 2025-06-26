@@ -1,8 +1,8 @@
-
+// 要使用這個 JS  ，HTML 的 script 標籤的 type 必須設定成 module ?!
 import * as My_db from './script.js?v=0.028'; // 引入 script.js 所有函數到 My_db 物件中
 
-let score = 0; //打字分數
-let currentLetter = ''; //目前要輸入的字母
+export let score = 0; //打字分數
+export let currentLetter = ''; //目前要輸入的字母
 let difficulty = '小學'; // 預設難度
 let timerNumber ; ///計時器編號
 let words_backup =[] ; ///放所有的英文單字，備份在本地端
@@ -11,10 +11,11 @@ let words_number = 0 ; //放 words[] 原本的陣列元素數量
 let oneWord = '' ;  //單字字串
 let chineseMean = '' ;  //單字中文意思
 let charArray = [] ; ///字母陣列
-let inputCorrectChar = false ; //輸入正確的字元 = true 
+export let inputCorrectChar = false ; //輸入正確的字元 = true 
 let userKeyPress = '' ; //使用者按下的按鍵
 let timeOutTimer = null ; //提示用 timeOuter 計時器
 
+let startplay = false ; // 開始玩按鈕是否被按下
 let replay = false ; //重玩按鈕是否被按下
 let replaySetTimeout ; //儲存 setTimeout ID 編號
 
@@ -46,6 +47,7 @@ document.querySelector('#rePlay').addEventListener(
     'click' ,
     event => {
         replay = true ;
+        startplay = false ;
         words =[] ; //初始化陣列
         charArray= [] ; //初始化陣列
         words = [...words_backup] ; // ... 展開運算子
@@ -65,70 +67,73 @@ document.querySelector('#rePlay').addEventListener(
 //若資料已轉換成
 // function startGame() {  // 單純使用PHP 時，用 fetch API 處理非同步程序
 async function startGame() {
-    const playerName = prompt("請輸入您的名稱:");
-    // console.log( '輸入名稱為 ' + playerName );
-
-    // 因為會使用到空白鍵當作輸入，所以開始按鈕，要先 disabled
-    document.querySelector('#startBtn').disabled = true ;
-
-    // 因為沒有按鈕在畫面上時，卷軸會接受到 焦點 ，當按下空白鍵時，就會往下捲動
-    // ，但這不是我要的效果，所以用另一個按鈕處理
-    // document.querySelector('#foucsBtn').focus();  //因為用 CSS overflow: hidden;  所以不用這個指令
-
+    if( !startplay ){
+        startplay = true ;
+        const playerName = prompt("請輸入您的名稱:");
+        // console.log( '輸入名稱為 ' + playerName );
     
-
-    if (playerName) {
-        // 使用 PHP 時，使用這部分語法，取得 MySQL 資料庫資料
-            // fetch('getWords.php')
-            // .then(response => response.json())
-            // .then(data => {
-            //     // console.log(data) ; //getWords.php 傳來的 JSON 資料  $words[] = ['word' => $row['word'],'chinese' => $row['chinese'] ];
-            //     words = data ; //設定英文字母
-            //     words_number = words.length ; //紀錄原始的單字數量
-            //     // console.log(words.length) ; //關聯式陣列，的資料筆數
-            //     // console.log(words[0]) ; //關聯式陣列，選擇第一筆資料
-            //     // console.log(words[0]['word'] ) ; //關聯式陣列，欄位名稱
-            //     // console.log(words[0]['chinese'] ) ; //關聯式陣列，欄位名稱
-            //     // console.log(words.shift() ) ; //關聯式陣列，欄位名稱
-            //     // console.log(words.length) ; //關聯式陣列，的資料筆數
-            //     // console.log(words[0]) ; //關聯式陣列，選擇第一筆資料
-            //     // console.log(words[0]['word'] ) ; //關聯式陣列，欄位名稱
-            //     // console.log(words[0]['chinese'] ) ; //關聯式陣列，欄位名稱
-            //     startTypingGame() ;
-            // });
-        //
-
-        //使用 firebase 的 firestore database 資料庫時，增加下面指令
-        //想要了解 非同步的順序  可以嘗試把 下面指令的 await 去掉
-        //會發現 當列出 scirpt.js 中的 console.log() 時，後面就會列印 這裡的 .then() 程序內容
-        //最後才會印出 95 ~ 97 的 console.log()
-        words = await My_db.getWordData().then( data => {
-            
-            console.log( '這是在 then() 中列印出' , data );
-            console.log( '這是在 then() 中列印出' , data.length );
-            // console.log( '這是在 then() 中列印出' , typeof( data ) );
-            // console.log( '這是在 then() 中列印出' , data[0]['word'] ); //OK
-            // console.log( '這是在 then() 中列印出' , data[0]['chinese'] ); //OK
-            
-            words_backup = data.slice() ; //用切片方法，複製所有元素給 words_backup
-            words_number = data.length ; //紀錄原始的單字數量
-            
-            console.log( '這是在 then() 中列印出' ,  words_backup.length );
-
-            return data ;
-
-        }); //取回所有字串，但被包在 JSON 格式中
-
-        console.log( words ); //會傳回是個 Promise 非同步的物件
-        console.log( typeof( words )); //會傳回是個 Promise 非同步的物件
-        console.log( words.length ); //執行這行時，words 還不是陣列?!，所以是 undefined
-
+        // 因為會使用到空白鍵當作輸入，所以開始按鈕，要先 disabled
+        document.querySelector('#startBtn').disabled = true ;
+    
+        // 因為沒有按鈕在畫面上時，卷軸會接受到 焦點 ，當按下空白鍵時，就會往下捲動
+        // ，但這不是我要的效果，所以用另一個按鈕處理
+        // document.querySelector('#foucsBtn').focus();  //因為用 CSS overflow: hidden;  所以不用這個指令
+    
         
-
-        if( words ){//如果有資料，就開始遊戲
-            startTypingGame();
+    
+        if (playerName) {
+            // 使用 PHP 時，使用這部分語法，取得 MySQL 資料庫資料
+                // fetch('getWords.php')
+                // .then(response => response.json())
+                // .then(data => {
+                //     // console.log(data) ; //getWords.php 傳來的 JSON 資料  $words[] = ['word' => $row['word'],'chinese' => $row['chinese'] ];
+                //     words = data ; //設定英文字母
+                //     words_number = words.length ; //紀錄原始的單字數量
+                //     // console.log(words.length) ; //關聯式陣列，的資料筆數
+                //     // console.log(words[0]) ; //關聯式陣列，選擇第一筆資料
+                //     // console.log(words[0]['word'] ) ; //關聯式陣列，欄位名稱
+                //     // console.log(words[0]['chinese'] ) ; //關聯式陣列，欄位名稱
+                //     // console.log(words.shift() ) ; //關聯式陣列，欄位名稱
+                //     // console.log(words.length) ; //關聯式陣列，的資料筆數
+                //     // console.log(words[0]) ; //關聯式陣列，選擇第一筆資料
+                //     // console.log(words[0]['word'] ) ; //關聯式陣列，欄位名稱
+                //     // console.log(words[0]['chinese'] ) ; //關聯式陣列，欄位名稱
+                //     startTypingGame() ;
+                // });
+            //
+    
+            //使用 firebase 的 firestore database 資料庫時，增加下面指令
+            //想要了解 非同步的順序  可以嘗試把 下面指令的 await 去掉
+            //會發現 當列出 scirpt.js 中的 console.log() 時，後面就會列印 這裡的 .then() 程序內容
+            //最後才會印出 95 ~ 97 的 console.log()
+            words = await My_db.getWordData().then( data => {
+                
+                console.log( '這是在 then() 中列印出' , data );
+                console.log( '這是在 then() 中列印出' , data.length );
+                // console.log( '這是在 then() 中列印出' , typeof( data ) );
+                // console.log( '這是在 then() 中列印出' , data[0]['word'] ); //OK
+                // console.log( '這是在 then() 中列印出' , data[0]['chinese'] ); //OK
+                
+                words_backup = data.slice() ; //用切片方法，複製所有元素給 words_backup
+                words_number = data.length ; //紀錄原始的單字數量
+                
+                console.log( '這是在 then() 中列印出' ,  words_backup.length );
+    
+                return data ;
+    
+            }); //取回所有字串，但被包在 JSON 格式中
+    
+            console.log( words ); //會傳回是個 Promise 非同步的物件
+            console.log( typeof( words )); //會傳回是個 Promise 非同步的物件
+            console.log( words.length ); //執行這行時，words 還不是陣列?!，所以是 undefined
+    
+            
+    
+            if( words ){//如果有資料，就開始遊戲
+                startTypingGame();
+            }
+    
         }
-
     }
 }
 
@@ -302,12 +307,73 @@ function nextLetter() {
     }, 10 );
 }
 
+// 把檢查的方法從按鈕事件提出，這樣外部 JS 才能方便使用
+export function checkTypeInput( keyName ,currentLetter ){
+
+        console.log( "checkTypeInput" , keyName , currentLetter) ;
+
+        if (keyName.toUpperCase() === currentLetter.toUpperCase()) {
+            //輸入正確的字母
+            score++; //增加分數
+
+            //在畫面上顯示分數
+            document.getElementById('score').innerText = `分數: ${score}`;
+
+            //將提示的樣式清除
+            document.querySelector('#'+ currentLetter.toUpperCase()).classList.remove('testword')  ;
+
+            inputCorrectChar = true ; //輸入正確
+        } else if( keyName == " " && currentLetter == "BLANK_KEY" ){
+            //空白鍵的判斷
+                //輸入正確的字母
+                score++; //增加分數
+
+                //在畫面上顯示分數
+                document.getElementById('score').innerText = `分數: ${score}`;
+
+                //將提示的樣式清除
+                document.querySelector('#'+ currentLetter).classList.remove('testword')  ;
+                
+                inputCorrectChar = true ; //輸入正確
+            //
+        } else if( keyName == "," && currentLetter == "COMMA" ){
+            //空白鍵的判斷
+                //輸入正確的字母
+                score++; //增加分數
+
+                //在畫面上顯示分數
+                document.getElementById('score').innerText = `分數: ${score}`;
+
+                //將提示的樣式清除
+                document.querySelector('#'+ currentLetter).classList.remove('testword')  ;
+                
+                inputCorrectChar = true ; //輸入正確
+            //
+        } else if( keyName == "." && currentLetter == "DOT" ){
+            //空白鍵的判斷
+                //輸入正確的字母
+                score++; //增加分數
+
+                //在畫面上顯示分數
+                document.getElementById('score').innerText = `分數: ${score}`;
+
+                //將提示的樣式清除
+                document.querySelector('#'+ currentLetter).classList.remove('testword')  ;
+                
+                inputCorrectChar = true ; //輸入正確
+            //        
+        } else {
+            score--;
+            document.getElementById('score').innerText = `分數: ${score}`;
+        }
+
+}
 
 
 
 ///在 HTML 按下按鈕的事件
 document.addEventListener('keydown', (event) => {
-    userKeyPress = event.key ;
+    userKeyPress = event.key ; //event.key 會是鍵盤按下的那個按鈕名稱 a ~ z ...,etc.
 
     // console.log( event.key );
     // console.log( event.key == " " ); //按下空白鍵 value 是 " "
@@ -320,69 +386,73 @@ document.addEventListener('keydown', (event) => {
     console.log( currentLetter == "COMMA" );
 
     console.log( event.key == '.' );
-    console.log( currentLetter == "DOT" );    
+    console.log( currentLetter == "DOT" );
 
-    if (event.key.toUpperCase() === currentLetter.toUpperCase()) {
-        //輸入正確的字母
-        score++; //增加分數
+    // 在外部建立檢察輸入的方法，供其他 JS 使用
+    checkTypeInput( event.key ,currentLetter ) ;
+    //以下註解，會用 checkTypeInput 取代
+        // if (event.key.toUpperCase() === currentLetter.toUpperCase()) {
+        //     //輸入正確的字母
+        //     score++; //增加分數
 
-        //在畫面上顯示分數
-        document.getElementById('score').innerText = `分數: ${score}`;
+        //     //在畫面上顯示分數
+        //     document.getElementById('score').innerText = `分數: ${score}`;
 
-        //將提示的樣式清除
-        document.querySelector('#'+ currentLetter.toUpperCase()).classList.remove('testword')  ;
+        //     //將提示的樣式清除
+        //     document.querySelector('#'+ currentLetter.toUpperCase()).classList.remove('testword')  ;
 
-        inputCorrectChar = true ; //輸入正確
-    } else if( event.key == " " && currentLetter == "BLANK_KEY" ){
-        //空白鍵的判斷
-            //輸入正確的字母
-            score++; //增加分數
+        //     inputCorrectChar = true ; //輸入正確
+        // } else if( event.key == " " && currentLetter == "BLANK_KEY" ){
+        //     //空白鍵的判斷
+        //         //輸入正確的字母
+        //         score++; //增加分數
 
-            //在畫面上顯示分數
-            document.getElementById('score').innerText = `分數: ${score}`;
+        //         //在畫面上顯示分數
+        //         document.getElementById('score').innerText = `分數: ${score}`;
 
-            //將提示的樣式清除
-            document.querySelector('#'+ currentLetter).classList.remove('testword')  ;
-            
-            inputCorrectChar = true ; //輸入正確
-        //
-    } else if( event.key == "," && currentLetter == "COMMA" ){
-        //空白鍵的判斷
-            //輸入正確的字母
-            score++; //增加分數
+        //         //將提示的樣式清除
+        //         document.querySelector('#'+ currentLetter).classList.remove('testword')  ;
+                
+        //         inputCorrectChar = true ; //輸入正確
+        //     //
+        // } else if( event.key == "," && currentLetter == "COMMA" ){
+        //     //空白鍵的判斷
+        //         //輸入正確的字母
+        //         score++; //增加分數
 
-            //在畫面上顯示分數
-            document.getElementById('score').innerText = `分數: ${score}`;
+        //         //在畫面上顯示分數
+        //         document.getElementById('score').innerText = `分數: ${score}`;
 
-            //將提示的樣式清除
-            document.querySelector('#'+ currentLetter).classList.remove('testword')  ;
-            
-            inputCorrectChar = true ; //輸入正確
-        //
-    } else if( event.key == "." && currentLetter == "DOT" ){
-        //空白鍵的判斷
-            //輸入正確的字母
-            score++; //增加分數
+        //         //將提示的樣式清除
+        //         document.querySelector('#'+ currentLetter).classList.remove('testword')  ;
+                
+        //         inputCorrectChar = true ; //輸入正確
+        //     //
+        // } else if( event.key == "." && currentLetter == "DOT" ){
+        //     //空白鍵的判斷
+        //         //輸入正確的字母
+        //         score++; //增加分數
 
-            //在畫面上顯示分數
-            document.getElementById('score').innerText = `分數: ${score}`;
+        //         //在畫面上顯示分數
+        //         document.getElementById('score').innerText = `分數: ${score}`;
 
-            //將提示的樣式清除
-            document.querySelector('#'+ currentLetter).classList.remove('testword')  ;
-            
-            inputCorrectChar = true ; //輸入正確
-        //        
-    } else {
-        score--;
-        document.getElementById('score').innerText = `分數: ${score}`;
-    }
+        //         //將提示的樣式清除
+        //         document.querySelector('#'+ currentLetter).classList.remove('testword')  ;
+                
+        //         inputCorrectChar = true ; //輸入正確
+        //     //        
+        // } else {
+        //     score--;
+        //     document.getElementById('score').innerText = `分數: ${score}`;
+        // }
+    //
 
     ///將按鈕設定為綠底白字
     highlightKey(event.key.toUpperCase(),500,"green","white");
 });
 
 ///設定字母高亮度狀態
-function highlightKey(key,delaytime,bgColor,fColor) {
+export function highlightKey(key,delaytime,bgColor,fColor) {
     var delayT = delaytime ?? 10 ; //預設延遲 500ms
     var backgroundColor =bgColor ?? "black"; //預設延遲 黑色
     var fontColor = fColor ?? "red" ; //預設延遲 紅色

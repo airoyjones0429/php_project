@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+
+    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Demo</title>
+
+    <!-- 引入 Firebase SDK -->
+    <!-- 要使用 type = "module"  的 JS 函數，
+        要先  export "會給外部引用的函數"，這樣外部才能使用 -->
+    <!-- 因為瀏覽器存取資源，會優先使用  本地端先前已下載的資源，後面增加參數，強制瀏覽器取回最新資源內容，這樣修改 CSS  JS 檔案時，就能確定取回最新版本-->
+    <script type="module" src="script.js?v=0.028"></script>
+
+    <!-- 如果 type 不是 "module" 就不能使用 import 功能!! -->
+    <script type="module"> 
+        // import { addData } from './script.js?v=0.006'; // 引入 addData 函數
+        import * as My_db from './script.js?v=0.028'; // 引入 script.js 所有函數到 My_db 物件中
+        document.querySelector('#addData').addEventListener(
+            'click' ,
+            My_db.addData //使用 type = "module" 的 JS 檔中的方法
+        );
+        document.querySelector('#setData').addEventListener(
+            'click' ,
+            My_db.setData
+        );
+        document.querySelector('#setData1').addEventListener(
+            'click' ,
+            My_db.setData1
+        );
+        document.querySelector('#setData2').addEventListener(
+            'click' ,
+            My_db.setData2
+        );
+        document.querySelector('#setData3').addEventListener(
+            'click' ,
+            My_db.setData3
+        );
+        document.querySelector('#setData4').addEventListener(
+            'click' ,
+            My_db.setData4
+        );
+        document.querySelector('#updateData1').addEventListener(
+            'click' ,
+            My_db.updateData1
+        );
+        document.querySelector('#updateData2').addEventListener(
+            'click' ,
+            My_db.updateData2
+        );
+        document.querySelector('#updateData3').addEventListener(
+            'click' ,
+            My_db.updateData3
+        );
+        document.querySelector('#updateData4').addEventListener(
+            'click' ,
+            My_db.updateData4
+        );        
+        document.querySelector('#arrayAddData1').addEventListener(
+            'click' ,
+            My_db.arrayAddData1
+        );
+        document.querySelector('#arrayRemoveData1').addEventListener(
+            'click' ,
+            My_db.arrayRemoveData1
+        );
+        document.querySelector('#incrementField').addEventListener(
+            'click' ,
+            My_db.incrementField
+        );
+        document.querySelector('#myRunTransaction').addEventListener(
+            'click' ,
+            My_db.myRunTransaction
+        );   
+        document.querySelector('#myRunTransaction1').addEventListener(
+            'click' ,
+            My_db.myRunTransaction1
+        );
+        document.querySelector('#myDeleteField').addEventListener(
+            'click' ,
+            My_db.myDeleteField
+        );
+        document.querySelector('#arrayAddData2').addEventListener(
+            'click' ,
+            My_db.arrayAddData2
+        );
+        document.querySelector('#getWordData').addEventListener(
+            'click' ,
+            My_db.getWordData
+        );                  
+    </script>
+</head>
+
+<body>
+    <h1>Firebase 連接示範</h1>
+
+    <div class="mdl-card">
+        <input type="button" id="addData" value="addData" class="mdl-button">
+
+        <input type="button" id="setData" value="setData" class="mdl-button">
+
+        <input type="button" id="setData1" value="setData1" class="mdl-button">
+
+        <input type="button" id="setData2" value="setData2" class="mdl-button">
+
+        <input type="button" id="setData3" value="setData3" class="mdl-button">
+
+        <input type="button" id="setData4" value="setData4" class="mdl-button">
+
+        <input type="button" id="updateData1" value="updateData1" class="mdl-button">
+
+        <input type="button" id="updateData2" value="updateData2" class="mdl-button">
+
+        <input type="button" id="updateData3" value="updateData3" class="mdl-button">
+
+        <input type="button" id="updateData4" value="updateData4" class="mdl-button">
+
+        <input type="button" id="arrayAddData1" value="arrayAddData1" class="mdl-button">
+
+        <input type="button" id="arrayRemoveData1" value="arrayRemoveData1" class="mdl-button">
+
+        <input type="button" id="incrementField" value="incrementField" class="mdl-button">
+
+        <input type="button" id="myRunTransaction" value="myRunTransaction" class="mdl-button">
+
+        <input type="button" id="myRunTransaction1" value="myRunTransaction1" class="mdl-button">
+
+        <input type="button" id="myDeleteField" value="myDeleteField" class="mdl-button">
+
+        
+        <!--  -->
+        <input type="button" id="arrayAddData2" value="arrayAddData2" class="mdl-button">
+
+        <input type="button" id="getWordData" value="getWordData" class="mdl-button">
+        
+
+        
+    </div>
+</body>
+</html>

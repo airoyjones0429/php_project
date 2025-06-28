@@ -550,7 +550,7 @@ export async function getWordData(){
 }
 
 // 從快取
-// 讀取特定集合文件 words 欄位資料
+// 讀取特定集合文件 words 欄位資料!!  目前我還沒有成功讀到快取的內容
 export async function getCacheWordData(){
     
     //設定文件連結
